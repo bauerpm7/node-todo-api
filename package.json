@@ -9,6 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mongodb": "^2.2.5"
+    "mongodb": "^2.2.5",
+    "mongoose": "^4.5.9"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "eslint-config-rallycoding": "^3.2.0"
   }
 }
