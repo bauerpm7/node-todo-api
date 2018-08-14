@@ -134,7 +134,6 @@ describe('Delete /todos/:id', () => {
       .expect(404);
     done();
   });
-
 });
 
 describe('Patch /todos/:id', () => {
