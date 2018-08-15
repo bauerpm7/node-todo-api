@@ -17,7 +17,6 @@
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.18.3",
     "crypto-js": "^3.1.6",
-    "expect": "^1.20.2",
     "express": "^4.16.3",
     "jsonwebtoken": "^7.1.9",
     "lodash": "^4.15.0",
@@ -30,6 +29,7 @@
   },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
-    "eslint-config-rallycoding": "^3.2.0"
+    "eslint-config-rallycoding": "^3.2.0",
+    "expect": "^21.1.0"
   }
 }
