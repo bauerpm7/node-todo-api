@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
-    setRequired: true,
+    Required: true,
     minLength: 1,
     trim: true,
     unique: true,
@@ -35,6 +35,7 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save', function (next) {
   const user = this;
+  
   if (user.isModified('password')) {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(user.password, salt, (err, hash) => {
@@ -50,6 +51,7 @@ UserSchema.pre('save', function (next) {
 UserSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
+
   return _.pick(userObject, ['_id', 'email']);
 };
 
@@ -57,7 +59,9 @@ UserSchema.methods.generateAuthToken = function () {
   const user = this;
   const access = 'auth';
   const token = jwt.sign({ _id: user._id.toHexString(), access }, process.env.JWT_SECRET).toString();
+  
   user.tokens = user.tokens.concat([{ access, token }]);
+  
   return user.save().then(() => {
     return token;
   });
@@ -68,9 +72,7 @@ UserSchema.methods.removeToken = function (token) {
 
   return user.update({
     $pull: {
-      tokens: {
-        token
-      }
+      tokens: { token }
     }
   });
 };
@@ -78,6 +80,7 @@ UserSchema.methods.removeToken = function (token) {
 UserSchema.statics.findByToken = function (token) {
   const User = this;
   let decoded;
+  
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (e) {
@@ -92,6 +95,7 @@ UserSchema.statics.findByToken = function (token) {
 
 UserSchema.statics.findByCredentials = function (email, password) {
   const user = this;
+  
   return user.findOne({ email }).then((user) => {
     if (!user) {
       return Promise.reject();

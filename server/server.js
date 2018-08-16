@@ -77,6 +77,7 @@ app.delete('/todos/:id', authenticate, (req, res) => {
 app.patch('/todos/:id', authenticate, (req, res) => {
   const id = req.params.id;
   const body = _.pick(req.body, ['text', 'completed']);
+  console.log(body);
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
@@ -88,17 +89,15 @@ app.patch('/todos/:id', authenticate, (req, res) => {
     body.completedAt = null;
   }
 
-  Todo.findOneAndUpdate(
-    { _id: id, _creator: req.user._id }, 
-    { $set: body }, 
-    { new: true })
-    .then((todo) => {
-      if (!todo) {
-        return res.status(404).send();
-      }
-      res.send({ todo });
-    })
-    .catch((e) => res.status(404).send());
+  Todo.findOneAndUpdate({ _id: id, _creator: req.user._id }, { $set: body }, { new: true }).then((todo) => {
+    if (!todo) {
+      return res.status(404).send();
+    }
+
+    res.send({ todo });
+  }).catch((e) => {
+    res.status(404).send();
+  });
 });
 
 app.post('/users', (req, res) => {
